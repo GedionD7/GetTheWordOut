@@ -10,12 +10,11 @@ const userRoutes = require("./routes/userRoutes.js");
 app.use(express.json({ limit: '50mb'}));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] Incoming Request: ${req.method} ${req.url}`);
-  next();
+    console.log(`[${new Date().toISOString()}] Incoming Request: ${req.method} ${req.url}`);
+    next();
 });
 
 app.set("views", "./views");
@@ -26,57 +25,57 @@ app.use("/events", eventRoutes);
 app.use("/login", userRoutes);
 app.use("/signup", userRoutes);
 
-
 app.get("/reset", (req, res) => {
-  res.render("reset");
+    res.render("reset");
 });
 
 app.get("/signup-page", (req, res) => {
-  res.render("signup");
+    res.render("signup");
 });
 
 app.get("/login-page", (req, res) => {
-  res.render("login");
+    res.render("login");
 });
 
 app.get("/create-an-event", (req, res) => {
-  res.render("create-an-event");
+    res.render("create-an-event");
 });
 
 app.get("/", (req, res) => {
-  res.render("index", {link_name: "/events"}); // Ensure {link_name: "/events"} is correct
+    res.render("index", {link_name: "/events"});
 });
-
 
 app.get("/Create", (req, res) => {
-  res.render("event"); // Renders 'event.ejs'
+    res.render("event");
 });
+
 app.get("/Edit",(req, res) => {
-  res.render("event"); // Renders 'event.ejs'
+    res.render("event");
 });
 
 app.get("/edit", (req, res) => {
-  res.render("event");
+    res.render("event");
 });
 
 app.get("/autofill", (req, res) =>{
-  res.render("autofill");
+    res.render("autofill");
 });
 
-
-app.listen(3000, () => {
-  console.log("Server started on port 3000");
+// ✅ CHANGE MADE HERE - This is the only modification needed
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
 });
 
 (async () => {
-  try {
-    await sequelize.sync();
-    console.log("Database synced successfully.");
-  } catch (error) {
-    console.error("Failed to synchronize models:", error);
-  }
+    try {
+        await sequelize.sync();
+        console.log("Database synced successfully.");
+    } catch (error) {
+        console.error("Failed to synchronize models:", error);
+    }
 })();
 
 app.get('*', (_, res) => {
-  res.status(404).send("Error 404; page not found");
+    res.status(404).send("Error 404; page not found");
 });
